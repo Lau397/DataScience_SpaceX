@@ -42,7 +42,7 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 html.P("Payload range (Kg):"),
                                 # TASK 3: Add a slider to select payload range
                                 dcc.RangeSlider(id='payload-slider', min = 0, max = 10000, 
-                                                step = 1000, value = [min_payload, max_payload])
+                                                step = 1000, value = [min_payload, max_payload]),
 
                                 # TASK 4: Add a scatter chart to show the correlation between payload and launch success
                                 html.Div(dcc.Graph(id='success-payload-scatter-chart')),
@@ -83,6 +83,39 @@ def get_pie_chart(entered_launch_site):
 
 # TASK 4:
 # Add a callback function for `site-dropdown` and `payload-slider` as inputs, `success-payload-scatter-chart` as output
+@app.callback(
+    Output(component_id = 'sucess-payload-scatter-chart',
+        component_property = 'figure'),
+    
+    [Input(component_id = 'site-dropdown',
+        component_property = 'value'),
+    Input(component_id = 'payload-slider',
+        component_property = 'value')]]
+            )
+
+def get_scatter_plot(entered_launch_site, slider_val):
+    
+    filtered_df = spacex_df[(slider_val[0] <= spacex_df["Payload Mass (kg)"] <= slider_val[1])]
+
+    if entered_launch_site == 'ALL':
+        fig = px.scatter(filtered_df, x = 'Payload Mass (kg)', y = 'Class', title = 'Sucessful launches by site',
+        color='Booster Version Category')
+        return fig
+
+    else:
+         filtered_df[filtered_df['Launch Site'] == entered_launch_site]
+        
+        for i in filtered_df['class']:
+            if i == 1:
+                filtered_df['outcome'] = 'Success'
+            else:
+                filtered_df['outcome'] = 'Failure'    
+        
+        filtered_df['counts'] = 1
+        fig = px.scatter(filtered_df, x = 'Payload Mass (kg)', y = 'Class', title = 'Sucessful launches for'+ entered_launch_site,
+        color='Booster Version Category')
+        return fig
+
 
 
 # Run the app
