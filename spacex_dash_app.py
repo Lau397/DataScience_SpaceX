@@ -90,7 +90,7 @@ def get_pie_chart(entered_launch_site):
     [Input(component_id = 'site-dropdown',
         component_property = 'value'),
     Input(component_id = 'payload-slider',
-        component_property = 'value')]]
+        component_property = 'value')]
             )
 
 def get_scatter_plot(entered_launch_site, slider_val):
