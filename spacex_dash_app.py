@@ -30,6 +30,7 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                                                             'value': 'KSC LC-39A'},
                                                                             {'label': 'Vandenberg Air Force Base Space Launch Complex (VAFB SLC-4E)',
                                                                             'value': 'VAFB SLC-4E'}], 
+                                                                value = 'ALL',            
                                                                 placeholder = "Select a Launch Site here",
                                                                 searchable = True),
                                 html.Br(),
@@ -66,7 +67,7 @@ def get_pie_chart(entered_launch_site):
         return fig
     
     else:
-        filtered_df[filtered_df['Launch Site'] == entered_launch_site]
+        filtered_df = filtered_df[filtered_df['Launch Site'] == entered_launch_site]
         
         for i in filtered_df['class']:
             if i == 1:
@@ -103,7 +104,7 @@ def get_scatter_plot(entered_launch_site, slider_val):
         return fig
 
     else:
-         filtered_df[filtered_df['Launch Site'] == entered_launch_site]
+        filtered_df = filtered_df[filtered_df['Launch Site'] == entered_launch_site]
         
         for i in filtered_df['class']:
             if i == 1:
